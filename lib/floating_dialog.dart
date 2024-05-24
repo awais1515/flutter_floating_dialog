@@ -7,7 +7,7 @@ class FloatingDialog extends StatefulWidget {
       this.onClose,
       this.onDrag,
       this.autoCenter = true,
-      this.child,
+      this.gestureDetectorChild,
       this.enableDragAnimation = true,
       this.closeIcon = const Icon(Icons.close),
       this.closeButtonRight = 0,
@@ -15,10 +15,12 @@ class FloatingDialog extends StatefulWidget {
       this.closeButtonTop,
       this.closeButtonBottom,
       this.dialogLeft,
-      this.dialogTop});
+      this.dialogTop,
+      this.child});
 
   final void Function()? onClose;
   final void Function(double x, double y)? onDrag;
+  final Widget? gestureDetectorChild;
   final Widget? child;
   final bool enableDragAnimation;
   final bool autoCenter;
@@ -82,65 +84,53 @@ class FloatingDialogState extends State<FloatingDialog> {
             Positioned(
               left: _xOffset == -1 ? 0 : _xOffset,
               top: _yOffset == -1 ? 0 : _yOffset,
-              child: GestureDetector(
-                onPanStart: (details) {
-                  if (mounted) {
-                    setState(() {
-                      _dragging = true;
-                    });
-                  }
-                },
-                onPanUpdate: (details) {
-                  if (!mounted) {
-                    return;
-                  }
-                  _xOffset += details.delta.dx;
-                  _yOffset += details.delta.dy;
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onPanStart: (details) {
+                      if (mounted) {
+                        setState(() {
+                          _dragging = true;
+                        });
+                      }
+                    },
+                    onPanUpdate: (details) {
+                      if (!mounted) {
+                        return;
+                      }
+                      _xOffset += details.delta.dx;
+                      _yOffset += details.delta.dy;
 
-                  widget.onDrag?.call(_xOffset, _yOffset);
+                      widget.onDrag?.call(_xOffset, _yOffset);
 
-                  setState(() {});
-                },
-                onPanEnd: (details) {
-                  if (mounted) {
-                    setState(() {
-                      _dragging = false;
-                    });
-                  }
-                },
-                child: AnimatedOpacity(
-                  duration: Duration(milliseconds: _dragging ? 0 : 500),
-                  opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
-                  child: Dialog(
-                    insetPadding: EdgeInsets.zero,
-                    child: Stack(
-                      children: [
-                        LayoutBuilder(
+                      setState(() {});
+                    },
+                    onPanEnd: (details) {
+                      if (mounted) {
+                        setState(() {
+                          _dragging = false;
+                        });
+                      }
+                    },
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: _dragging ? 0 : 500),
+                      opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
+                      child: Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        child: LayoutBuilder(
                           key: widgetKey,
                           builder: (context, constraints) {
-                            return (widget.child ??
+                            return (widget.gestureDetectorChild ??
                                 const SizedBox(
                                   height: 100,
                                 ));
                           },
                         ),
-                        if (widget.onClose != null)
-                          Positioned(
-                            right: widget.closeButtonRight,
-                            left: widget.closeButtonLeft,
-                            top: widget.closeButtonTop,
-                            bottom: widget.closeButtonBottom,
-                            child: IconButton(
-                              icon: widget.closeIcon,
-                              onPressed: () {
-                                widget.onClose!();
-                              },
-                            ),
-                          ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  if (widget.child != null) widget.child!
+                ],
               ),
             ),
           ],

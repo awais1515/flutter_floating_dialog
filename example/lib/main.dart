@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:floating_dialog/floating_dialog.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -64,12 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 onClose: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const SizedBox(
+                                gestureDetectorChild: const SizedBox(
                                     height: 200,
                                     width: 300,
-                                    child: Align(
-                                        alignment: Alignment.topCenter,
-                                        child: Text('Dialog Title'))));
+                                    child: Align(alignment: Alignment.topCenter, child: Text('Dialog Title'))));
                           });
                     },
                     child: const Text('Show using showDialog'),
@@ -87,12 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       _showDialog = false;
                     });
                   },
-                  child: const SizedBox(
+                  gestureDetectorChild: const SizedBox(
                       height: 200,
                       width: 300,
-                      child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text('Dialog Title')))),
+                      child: Align(alignment: Alignment.topCenter, child: Text('Dialog Title')))),
           ],
         ));
   }
