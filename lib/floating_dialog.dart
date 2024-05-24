@@ -86,52 +86,51 @@ class FloatingDialogState extends State<FloatingDialog> {
               top: _yOffset == -1 ? 0 : _yOffset,
               child: Dialog(
                 insetPadding: EdgeInsets.zero,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GestureDetector(
-                      onPanStart: (details) {
-                        if (mounted) {
-                          setState(() {
-                            _dragging = true;
-                          });
-                        }
-                      },
-                      onPanUpdate: (details) {
-                        if (!mounted) {
-                          return;
-                        }
-                        _xOffset += details.delta.dx;
-                        _yOffset += details.delta.dy;
+                child: LayoutBuilder(
+                    key: widgetKey,
+                    builder: (context, constraints) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onPanStart: (details) {
+                              if (mounted) {
+                                setState(() {
+                                  _dragging = true;
+                                });
+                              }
+                            },
+                            onPanUpdate: (details) {
+                              if (!mounted) {
+                                return;
+                              }
+                              _xOffset += details.delta.dx;
+                              _yOffset += details.delta.dy;
 
-                        widget.onDrag?.call(_xOffset, _yOffset);
+                              widget.onDrag?.call(_xOffset, _yOffset);
 
-                        setState(() {});
-                      },
-                      onPanEnd: (details) {
-                        if (mounted) {
-                          setState(() {
-                            _dragging = false;
-                          });
-                        }
-                      },
-                      child: AnimatedOpacity(
-                        duration: Duration(milliseconds: _dragging ? 0 : 500),
-                        opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
-                        child: LayoutBuilder(
-                          key: widgetKey,
-                          builder: (context, constraints) {
-                            return (widget.gestureDetectorChild ??
-                                const SizedBox(
-                                  height: 100,
-                                ));
-                          },
-                        ),
-                      ),
-                    ),
-                    if (widget.child != null) widget.child!
-                  ],
-                ),
+                              setState(() {});
+                            },
+                            onPanEnd: (details) {
+                              if (mounted) {
+                                setState(() {
+                                  _dragging = false;
+                                });
+                              }
+                            },
+                            child: AnimatedOpacity(
+                              duration: Duration(milliseconds: _dragging ? 0 : 500),
+                              opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
+                              child: (widget.gestureDetectorChild ??
+                                  const SizedBox(
+                                    height: 100,
+                                  )),
+                            ),
+                          ),
+                          if (widget.child != null) widget.child!
+                        ],
+                      );
+                    }),
               ),
             ),
           ],
