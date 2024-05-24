@@ -7,7 +7,7 @@ class FloatingDialog extends StatefulWidget {
       this.onClose,
       this.onDrag,
       this.autoCenter = true,
-      this.gestureDetectorChild,
+      required this.gestureDetectorChild,
       this.enableDragAnimation = true,
       this.closeIcon = const Icon(Icons.close),
       this.closeButtonRight = 0,
@@ -20,7 +20,7 @@ class FloatingDialog extends StatefulWidget {
 
   final void Function()? onClose;
   final void Function(double x, double y)? onDrag;
-  final Widget? gestureDetectorChild;
+  final Widget gestureDetectorChild;
   final Widget? child;
   final bool enableDragAnimation;
   final bool autoCenter;
@@ -119,13 +119,9 @@ class FloatingDialogState extends State<FloatingDialog> {
                               }
                             },
                             child: AnimatedOpacity(
-                              duration: Duration(milliseconds: _dragging ? 0 : 500),
-                              opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
-                              child: (widget.gestureDetectorChild ??
-                                  const SizedBox(
-                                    height: 100,
-                                  )),
-                            ),
+                                duration: Duration(milliseconds: _dragging ? 0 : 500),
+                                opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
+                                child: widget.gestureDetectorChild),
                           ),
                           if (widget.child != null) widget.child!
                         ],
