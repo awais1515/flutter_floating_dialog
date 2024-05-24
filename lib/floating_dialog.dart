@@ -87,6 +87,7 @@ class FloatingDialogState extends State<FloatingDialog> {
               child: Dialog(
                 insetPadding: EdgeInsets.zero,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     GestureDetector(
                       onPanStart: (details) {
