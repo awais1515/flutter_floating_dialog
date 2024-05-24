@@ -84,39 +84,39 @@ class FloatingDialogState extends State<FloatingDialog> {
             Positioned(
               left: _xOffset == -1 ? 0 : _xOffset,
               top: _yOffset == -1 ? 0 : _yOffset,
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onPanStart: (details) {
-                      if (mounted) {
-                        setState(() {
-                          _dragging = true;
-                        });
-                      }
-                    },
-                    onPanUpdate: (details) {
-                      if (!mounted) {
-                        return;
-                      }
-                      _xOffset += details.delta.dx;
-                      _yOffset += details.delta.dy;
+              child: Dialog(
+                insetPadding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onPanStart: (details) {
+                        if (mounted) {
+                          setState(() {
+                            _dragging = true;
+                          });
+                        }
+                      },
+                      onPanUpdate: (details) {
+                        if (!mounted) {
+                          return;
+                        }
+                        _xOffset += details.delta.dx;
+                        _yOffset += details.delta.dy;
 
-                      widget.onDrag?.call(_xOffset, _yOffset);
+                        widget.onDrag?.call(_xOffset, _yOffset);
 
-                      setState(() {});
-                    },
-                    onPanEnd: (details) {
-                      if (mounted) {
-                        setState(() {
-                          _dragging = false;
-                        });
-                      }
-                    },
-                    child: AnimatedOpacity(
-                      duration: Duration(milliseconds: _dragging ? 0 : 500),
-                      opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
-                      child: Dialog(
-                        insetPadding: EdgeInsets.zero,
+                        setState(() {});
+                      },
+                      onPanEnd: (details) {
+                        if (mounted) {
+                          setState(() {
+                            _dragging = false;
+                          });
+                        }
+                      },
+                      child: AnimatedOpacity(
+                        duration: Duration(milliseconds: _dragging ? 0 : 500),
+                        opacity: _dragging && widget.enableDragAnimation ? 0.8 : 1.0,
                         child: LayoutBuilder(
                           key: widgetKey,
                           builder: (context, constraints) {
@@ -128,9 +128,9 @@ class FloatingDialogState extends State<FloatingDialog> {
                         ),
                       ),
                     ),
-                  ),
-                  if (widget.child != null) widget.child!
-                ],
+                    if (widget.child != null) widget.child!
+                  ],
+                ),
               ),
             ),
           ],
