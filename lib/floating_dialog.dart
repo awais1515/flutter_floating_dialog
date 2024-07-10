@@ -16,7 +16,8 @@ class FloatingDialog extends StatefulWidget {
       this.closeButtonBottom,
       this.dialogLeft,
       this.dialogTop,
-      this.child});
+      this.child,
+      this.shape});
 
   final void Function()? onClose;
   final void Function(double x, double y)? onDrag;
@@ -31,6 +32,7 @@ class FloatingDialog extends StatefulWidget {
   final double? closeButtonBottom;
   final double? dialogLeft;
   final double? dialogTop;
+  final ShapeBorder? shape;
 
   @override
   FloatingDialogState createState() => FloatingDialogState();
@@ -85,6 +87,7 @@ class FloatingDialogState extends State<FloatingDialog> {
               left: _xOffset == -1 ? 0 : _xOffset,
               top: _yOffset == -1 ? 0 : _yOffset,
               child: Dialog(
+                shape: widget.shape,
                 insetPadding: EdgeInsets.zero,
                 child: LayoutBuilder(
                     key: widgetKey,
