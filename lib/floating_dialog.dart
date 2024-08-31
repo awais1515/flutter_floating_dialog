@@ -17,7 +17,9 @@ class FloatingDialog extends StatefulWidget {
       this.dialogLeft,
       this.dialogTop,
       this.child,
-      this.shape});
+      this.shape,
+      this.defaultXOffset,
+      this.defaultYOffset});
 
   final void Function()? onClose;
   final void Function(double x, double y)? onDrag;
