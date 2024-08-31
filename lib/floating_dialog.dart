@@ -32,6 +32,9 @@ class FloatingDialog extends StatefulWidget {
   final double? closeButtonBottom;
   final double? dialogLeft;
   final double? dialogTop;
+  final double? defaultXOffset;
+  final double? defaultYOffset;
+
   final ShapeBorder? shape;
 
   @override
@@ -71,8 +74,8 @@ class FloatingDialogState extends State<FloatingDialog> {
   @override
   Widget build(BuildContext context) {
     if (_rect != Rect.zero && widget.autoCenter && _xOffset == -1) {
-      _xOffset = (MediaQuery.of(context).size.width - _rect.width) / 2;
-      _yOffset = (MediaQuery.of(context).size.height - _rect.height) / 2;
+      _xOffset = widget.defaultXOffset ?? (MediaQuery.of(context).size.width - _rect.width) / 2;
+      _yOffset = widget.defaultYOffset ?? (MediaQuery.of(context).size.height - _rect.height) / 2;
     } else {
       if (_xOffset == -1) {
         _xOffset = widget.dialogLeft ?? _xOffset;
